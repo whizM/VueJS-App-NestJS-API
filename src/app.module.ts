@@ -11,7 +11,7 @@ import { ConfigService } from 'nestjs-dotenv';
 
 @Module({
   imports:  [
-            MongooseModule.forRoot("mongodb+srv://User:EnZvtyR1UrdASYfO@cluster0.1ntwr.mongodb.net/<dbname>?retryWrites=true&w=majority"),
+            MongooseModule.forRoot(process.env.MONGO_DB_URL),
             ConfigModule.forRoot(),
             ProduseModule
             ],
