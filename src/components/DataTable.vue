@@ -3,37 +3,38 @@
       <table class="fl-table">
           <thead>
             <tr>
-                <th>Header 1</th>
-                <th>Header 2</th>
-                <th>Header 3</th>
-                <th>Header 4</th>
-                <th>Header 5</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Weight</th>
+                <th>Price</th>
+                <th>Color</th>
+                <th>Options</th>
             </tr>
           </thead>
           <tbody>
-            <div v-for="product in allProducts" :key=product.id class="product">
-              <tr>
-                  <td>Content 1</td>
-                  <td>Content 1</td>
-                  <td>Content 1</td>
-                  <td>Content 1</td>
-                  <td>Content 1</td>
-              </tr>
-            </div>
+            <Product v-for="product in allProducts" :key=product.id v-bind:product="product" class="product"/>
           </tbody>
       </table>
+      <Form v-if="showForm" />
+
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import Product from './Product';
+import Form from './Form';
 
 export default {
   name: 'DataTable',
   methods: {
-    ...mapActions(["getProducts"])
+    ...mapActions(["getProducts", "revertShowForm"]),
   },
-  computed: mapGetters(['allProducts']),
+  components:{
+      Product,
+      Form
+  },
+  computed: mapGetters(['allProducts', 'showForm']),
   created(){
     this.getProducts();
   }
