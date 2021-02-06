@@ -10,9 +10,8 @@ import { mapActions } from 'vuex';
 export default {
     name:"AddProduct",
     methods:{
-        ...mapActions(["revertShowForm", "setIsAdd"]),
+        ...mapActions(["revertShowForm"]),
         openForm() {
-            this.setIsAdd(true);
             this.revertShowForm();
         }
     }

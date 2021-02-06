@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
     name:"Form",
@@ -25,25 +25,31 @@ export default {
             color: ""
         }
     },
-    props:["product"],
     methods: {
-        ...mapActions(["addProduct", "revertShowForm"]),
-        onSubmit(e){
+        ...mapActions(["addProduct", "revertShowForm", "editProduct", "getProductId"]),
+        async onSubmit(e){
             e.preventDefault();
 
               const product = {
-              name: this.name,
-              code :this.code,
-              weight: this.weight,
-              price : this.price,
-              color : this.color
+                name: this.name,
+                code :this.code,
+                weight: this.weight,
+                price : this.price,
+                color : this.color
               }
 
-            this.addProduct(product);
+            const id = await this.getProductId();
+
+            if(id === ""){
+              this.addProduct(product);
+            } else {
+              product["id"] = id;
+              this.editProduct(product);
+            }
+
             this.revertShowForm();
         }
     },
-    computed: mapGetters(['isAdd'])
 }
 </script>
 

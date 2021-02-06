@@ -15,7 +15,7 @@
             <Product v-for="product in allProducts" :key=product.id v-bind:product="product" class="product"/>
           </tbody>
       </table>
-      <Form v-if="showForm" />
+      <Form v-if="getIsFormDisplayed" />
 
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
       Product,
       Form
   },
-  computed: mapGetters(['allProducts', 'showForm']),
+  computed: mapGetters(['allProducts', 'getIsFormDisplayed']),
   created(){
     this.getProducts();
   }

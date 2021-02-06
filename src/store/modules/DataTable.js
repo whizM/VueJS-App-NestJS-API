@@ -2,20 +2,16 @@ import axios from 'axios';
 
 const state = {
     products:[],
-    showForm: false,
-    isAdd:false,
 };
 
 const getters = {
     allProducts: state => state.products,
-    showForm: state => state.showForm,
-    isAdd: state => state.isAdd,
 };
 
 const actions = {
     async getProducts({ commit }) {
-        const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
-        
+        const response = await axios.get("https://jsonplaceholder.typicode.com/posts?_limit=5");
+
         commit("fillDataTable", response.data);
     },
 
@@ -25,31 +21,36 @@ const actions = {
         commit("addToDataTable", response.data);
     },
 
-    revertShowForm({commit}){
-        commit("revertShowForm");
-    },
-
     async editProduct({commit}, product){
-        const response = await axios.put(`https://jsonplaceholder.typicode.com/posts/${product.id}`);
+
+        const response = await axios.put(`https://jsonplaceholder.typicode.com/posts/${product.id}`, {...product});
 
         commit("editProduct", response.data);
     },
 
-    setIsAdd({commit},bool){
-        commit("setIsAdd", bool);
+    deleteProduct({commit}, id){
+        commit("deleteProduct", id);
     }
 };
 
 const mutations = {
     fillDataTable: (state, products) => (state.products = products),
     addToDataTable: (state, product) => (state.products.unshift(product)),
-    revertShowForm: (state) => (state.showForm = !state.showForm),
     editProduct: (state, product) => {
-        const index = state.products.findIndex(productInDB => {productInDB.id === product.id}); 
+        const index = state.products.findIndex( productInDB => productInDB.id === product.id);
         
-        state.products[index] = product;
+        if(index !== -1){
+            state.products.splice(index, 1, product);
+        }
     },
-    setIsAdd:(state, bool) => (state.isAdd = bool)
+    deleteProduct: (state, id) => {
+        const index = state.products.findIndex(productInDB => productInDB.id === id);
+
+        if(index !== -1){
+            state.products[index].isDeleted = true;
+        }
+        
+    }
 };
 
 export default {

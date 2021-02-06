@@ -1,13 +1,13 @@
 <template>
-    <tr>
-        <td>{{product.id}}</td>
-        <td>{{product.id}}</td>
-        <td>{{product.id}}</td>
-        <td>{{product.id}}</td>
-        <td>{{product.id}}</td>
+    <tr v-if="!product.isDeleted">
+        <td>{{product.isDeleted}}</td>
+        <td>{{product.code}}</td>
+        <td>{{product.weight}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.color}}</td>
         <td>
-            <button class="btn btn-info">Edit</button> 
-            <button class="btn btn-danger">Delete</button>
+            <button class="btn btn-info" v-on:click="showForm(product.id)">Edit</button> 
+            <button class="btn btn-danger" v-on:click="setDelete(product.id)">Delete</button>
         </td>
     </tr>
 </template>
@@ -19,7 +19,13 @@ export default {
   name: 'Product',
   props:['product'],
   methods:{
-        ...mapActions(["revertShowForm"]),
+        ...mapActions(["revertShowForm", "deleteProduct"]),
+        showForm(id){
+            this.revertShowForm(id);
+        },
+        setDelete(id){
+            this.deleteProduct(id);
+        }
     }
 }
 </script>
