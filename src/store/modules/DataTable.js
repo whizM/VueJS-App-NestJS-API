@@ -1,11 +1,31 @@
 import axios from 'axios';
 
 const state = {
-    products:[],
+    products:[
+        {
+        name:"uest",
+        code: "uest",
+        weight: 2,
+        price: 2,
+        color: "red",
+        isDeleted: false
+        },
+        {
+            name:"test",
+            code: "Test",
+            weight: 1,
+            price: 1,
+            color: "green",
+            isDeleted: false
+        },
+
+    ],
+    headers:["name", "code", "weight", "price", "color"]
 };
 
 const getters = {
     allProducts: state => state.products,
+    getHeaders: state => state.headers
 };
 
 const actions = {
@@ -34,13 +54,21 @@ const actions = {
         commit("editProduct", response.data);
     },
 
-    deleteProduct({commit}, id){
+    async deleteProduct({commit}, id){
         commit("deleteProduct", id);
+    },
+
+    sort({commit}, string){
+        commit("sort", string);
+    },
+
+    sortByNumber({commit}, number){
+        commit("sortByNumber", number);
     }
 };
 
 const mutations = {
-    fillDataTable: (state, products) => (state.products = products),
+    fillDataTable: (state) => (state.products),
     addToDataTable: (state, product) => (state.products.unshift(product)),
     editProduct: (state, product) => {
         const index = state.products.findIndex( productInDB => productInDB.id === product.id);
@@ -49,16 +77,30 @@ const mutations = {
             state.products.splice(index, 1, product);
         }
     },
+
     deleteProduct: (state, id) => {
         const index = state.products.findIndex(productInDB => productInDB.id === id);
 
         console.log(index);
         if(index !== -1){
             state.products[index].isDeleted = true;
-            console.log(state.products);
         }
         
-    }
+    },
+
+    sort(state, string){
+        const compare = (a,b) => {
+            if(a[string] < b[string])
+                return -1;
+            
+            
+            if(a[string] === b[string])
+                return 0
+
+            return 1;
+        }
+        state.products.sort(compare);
+    },
 };
 
 export default {

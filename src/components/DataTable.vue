@@ -1,19 +1,15 @@
 <template>
   <div class="datatable">
       <table class="fl-table">
-          <thead>
+        <thead>
             <tr>
-                <th>Name</th>
-                <th>Code</th>
-                <th>Weight</th>
-                <th>Price</th>
-                <th>Color</th>
-                <th>Options</th>
-            </tr>
-          </thead>
-          <tbody>
+            <Sort v-for="header in getHeaders" :key=header v-bind:name="header" />
+            <th>Options</th>
+        </tr> 
+        </thead>
+        <tbody>
             <Product v-for="product in allProducts" :key=product.id v-bind:product="product" class="product"/>
-          </tbody>
+        </tbody>
       </table>
     <PopUp />
   </div>
@@ -23,6 +19,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import Product from './Product';
 import PopUp from './PopUp';
+import Sort from './Sort';
 
 export default {
   name: 'DataTable',
@@ -31,9 +28,10 @@ export default {
   },
   components:{
       Product,
-      PopUp
+      PopUp,
+      Sort
   },
-  computed: mapGetters(['allProducts']),
+  computed: mapGetters(["allProducts", "getHeaders"]),
   created(){
     this.getProducts();
   }
@@ -164,5 +162,6 @@ h2{
         display: block;
         text-align: center;
     }
+
 }
 </style>
