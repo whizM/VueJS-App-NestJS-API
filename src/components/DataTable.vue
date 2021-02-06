@@ -15,33 +15,31 @@
             <Product v-for="product in allProducts" :key=product.id v-bind:product="product" class="product"/>
           </tbody>
       </table>
-      <Form v-if="getIsFormDisplayed" />
-
+    <PopUp />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import Product from './Product';
-import Form from './Form';
+import PopUp from './PopUp';
 
 export default {
   name: 'DataTable',
   methods: {
-    ...mapActions(["getProducts", "revertShowForm"]),
+    ...mapActions(["getProducts"]),
   },
   components:{
       Product,
-      Form
+      PopUp
   },
-  computed: mapGetters(['allProducts', 'getIsFormDisplayed']),
+  computed: mapGetters(['allProducts']),
   created(){
     this.getProducts();
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 *{
     box-sizing: border-box;
@@ -61,8 +59,6 @@ h2{
     color: white;
     padding: 30px 0;
 }
-
-/* Table Styles */
 
 .table-wrapper{
     margin: 10px 70px 70px;
@@ -105,8 +101,6 @@ h2{
 .fl-table tr:nth-child(even) {
     background: #F8F8F8;
 }
-
-/* Responsive */
 
 @media (max-width: 767px) {
     .fl-table {

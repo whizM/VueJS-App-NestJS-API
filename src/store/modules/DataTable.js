@@ -12,11 +12,17 @@ const actions = {
     async getProducts({ commit }) {
         const response = await axios.get("https://jsonplaceholder.typicode.com/posts?_limit=5");
 
+        for(let res of response.data){
+            res["isDeleted"] = false;
+        }
+
         commit("fillDataTable", response.data);
     },
 
-    async addProduct({commit}){
-        const response = await axios.post("https://jsonplaceholder.typicode.com/posts", {isDeleted: false});
+    async addProduct({commit}, product){
+        product["isDeleted"] = false;
+
+        const response = await axios.post("https://jsonplaceholder.typicode.com/posts", {...product});
 
         commit("addToDataTable", response.data);
     },
@@ -46,8 +52,10 @@ const mutations = {
     deleteProduct: (state, id) => {
         const index = state.products.findIndex(productInDB => productInDB.id === id);
 
+        console.log(index);
         if(index !== -1){
             state.products[index].isDeleted = true;
+            console.log(state.products);
         }
         
     }

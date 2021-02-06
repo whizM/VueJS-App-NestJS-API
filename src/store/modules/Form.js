@@ -1,15 +1,14 @@
 const state = {
-    isFormDisplayed: false,
-    id: ""
+    id: "",
 };
 
 const getters = {
-    getIsFormDisplayed: state => state.isFormDisplayed,
 };
 
 const actions = {
-    revertShowForm({commit}, id){
-        commit("revertShowForm", id);
+
+    setProductId({commit}, id){
+        commit('setProductId', id);
     },
 
     getProductId(){
@@ -18,14 +17,8 @@ const actions = {
 };
 
 const mutations = {
-    revertShowForm: (state, id) => {
-        state.isFormDisplayed = !state.isFormDisplayed
-
-        if(id){
-            state.id = id;
-        } else {
-            state.id = "";
-        }
+    setProductId: (state, id) => {
+        state.id = id;
     },
 };
 
