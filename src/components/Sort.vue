@@ -1,5 +1,7 @@
 <template>
-    <th><v-btn style="color:white" v-on:click="sortProducts(name)" text >{{name}}</v-btn></th>
+    <td scope="col">  
+        <v-btn style="color:white;" v-on:click="sortProducts(name)" text >{{name}}</v-btn>
+    </td>
 </template>
 
 <script>
@@ -18,5 +20,7 @@ export default {
 </script>
 
 <style scoped>
-
+td {
+  border: 1px solid black;
+}
 </style>

@@ -27,7 +27,11 @@ const actions = {
 
     async editProduct({commit}, product){
 
-        const response = await axios.put(`http://localhost:3000/${product.id}`, {...product});
+        console.log("Action", product._id);
+        console.log(`http://localhost:3000/${product._id}`);
+        const response = await axios.put(`http://localhost:3000/produse/${product._id}`, {product});
+
+        console.log(response.data);
 
         commit("editProduct", response.data);
     },
@@ -51,11 +55,13 @@ const mutations = {
     fillDataTable: (state, products) => (state.products = products),
     addToDataTable: (state, product) => (state.products.unshift(product)),
     editProduct: (state, product) => {
-        const index = state.products.findIndex( productInDB => productInDB.id === product.id);
+
+        const index = state.products.findIndex( productInDB => productInDB._id === product._id);
         
         if(index !== -1){
             state.products.splice(index, 1, product);
         }
+
     },
 
     deleteProduct: (state, id) => {
