@@ -1,25 +1,7 @@
 import axios from 'axios';
 
 const state = {
-    products:[
-        {
-        name:"uest",
-        code: "uest",
-        weight: 2,
-        price: 2,
-        color: "red",
-        isDeleted: false
-        },
-        {
-            name:"test",
-            code: "Test",
-            weight: 1,
-            price: 1,
-            color: "green",
-            isDeleted: false
-        },
-
-    ],
+    products:[],
     headers:["name", "code", "weight", "price", "color"]
 };
 
@@ -30,11 +12,7 @@ const getters = {
 
 const actions = {
     async getProducts({ commit }) {
-        const response = await axios.get("https://jsonplaceholder.typicode.com/posts?_limit=5");
-
-        for(let res of response.data){
-            res["isDeleted"] = false;
-        }
+        const response = await axios.get("http://localhost:3000/produse");
 
         commit("fillDataTable", response.data);
     },
@@ -42,20 +20,22 @@ const actions = {
     async addProduct({commit}, product){
         product["isDeleted"] = false;
 
-        const response = await axios.post("https://jsonplaceholder.typicode.com/posts", {...product});
+        const response = await axios.post("http://localhost:3000/produse", {product});
 
         commit("addToDataTable", response.data);
     },
 
     async editProduct({commit}, product){
 
-        const response = await axios.put(`https://jsonplaceholder.typicode.com/posts/${product.id}`, {...product});
+        const response = await axios.put(`http://localhost:3000/${product.id}`, {...product});
 
         commit("editProduct", response.data);
     },
 
     async deleteProduct({commit}, id){
-        commit("deleteProduct", id);
+        const response = await axios.delete(`http://localhost:3000/produse/${id}`);
+
+        commit("deleteProduct", response.data.id);
     },
 
     sort({commit}, string){
@@ -68,7 +48,7 @@ const actions = {
 };
 
 const mutations = {
-    fillDataTable: (state) => (state.products),
+    fillDataTable: (state, products) => (state.products = products),
     addToDataTable: (state, product) => (state.products.unshift(product)),
     editProduct: (state, product) => {
         const index = state.products.findIndex( productInDB => productInDB.id === product.id);

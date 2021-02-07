@@ -7,7 +7,7 @@
         <td>{{product.color}}</td>
         <td>
             <v-btn style="color:white; background-color:orange; margin-right:3em" text v-on:click="showForm(product.id)">Edit</v-btn>
-            <v-btn style="color:white; background-color:red;" text v-on:click="setDelete(product.id)">Delete</v-btn>
+            <v-btn style="color:white; background-color:red;" text v-on:click="setDelete(product._id)">Delete</v-btn>
         </td>
     </tr>
 </template>
