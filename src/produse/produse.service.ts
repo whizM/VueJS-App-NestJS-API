@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Header, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { copyFileSync } from 'fs';
 import { Model } from 'mongoose';
@@ -8,12 +8,14 @@ import { Product } from './produse.model'
 export class ProduseService {
     constructor(@InjectModel('Produs') private readonly produsModel: Model<Product>){}
 
+    @Header('Access-Control-Allow-Origin', '*')
     async addProduct(product: Product){
         const newProduct = await new this.produsModel(product).save();
 
         return newProduct;
     }
 
+    @Header('Access-Control-Allow-Origin', '*')
     async editProduct(id: string, product: Product){
         const editedProduct = await this.findProductById(id);
 
@@ -30,6 +32,7 @@ export class ProduseService {
         return editedProduct;
     }
 
+    @Header('Access-Control-Allow-Origin', '*')
     async deleteProduct(id: string){
         const deletedProduct = await this.findProductById(id);
 
@@ -43,6 +46,7 @@ export class ProduseService {
         return deletedProduct;
     }
 
+    @Header('Access-Control-Allow-Origin', '*')
     async getProducts(){
         const products = await this.produsModel.find({});
 

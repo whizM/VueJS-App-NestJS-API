@@ -1,3 +1,4 @@
+import { Header } from '@nestjs/common';
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { Product } from './produse.model';
 import { ProduseService } from './produse.service';
@@ -5,8 +6,10 @@ import { ProduseService } from './produse.service';
 @Controller('produse')
 export class ProduseController {
     constructor(private readonly productService: ProduseService){}
-
+    
     @Post()
+    @Header('Access-Control-Allow-Origin', '*')
+    @Header('Access-Control-Allow-Methods', 'POST')
     async addProduct(@Body('product') product: Product){
         const newProduct = await this.productService.addProduct(product);
 
@@ -14,6 +17,7 @@ export class ProduseController {
     }
 
     @Put(":productId")
+    @Header('Access-Control-Allow-Origin', '*')
     async editProduct(@Body('product') product: Product, @Param('productId') productId){
         const editedProduct = await this.productService.editProduct(productId, product);
 
@@ -21,6 +25,7 @@ export class ProduseController {
     }
 
     @Delete(":productId")
+    @Header('Access-Control-Allow-Origin', '*')
     async deleteProduct(@Param('productId') productId){
         const deletedProduct = await this.productService.deleteProduct(productId);
 
@@ -28,6 +33,7 @@ export class ProduseController {
     }
 
     @Get()
+    @Header('Access-Control-Allow-Origin', '*')
     async getProducts(){
         const products = await this.productService.getProducts();
 
