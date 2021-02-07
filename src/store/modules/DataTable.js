@@ -35,7 +35,7 @@ const actions = {
     async deleteProduct({commit}, id){
         const response = await axios.delete(`http://localhost:3000/produse/${id}`);
 
-        commit("deleteProduct", response.data.id);
+        commit("deleteProduct", response.data._id);
     },
 
     sort({commit}, string){
@@ -59,9 +59,8 @@ const mutations = {
     },
 
     deleteProduct: (state, id) => {
-        const index = state.products.findIndex(productInDB => productInDB.id === id);
+        const index = state.products.findIndex(productInDB => productInDB._id === id);
 
-        console.log(index);
         if(index !== -1){
             state.products[index].isDeleted = true;
         }
