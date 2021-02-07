@@ -1,5 +1,7 @@
 <template>
-<div>
+<div class="row">
+<div class="col-9"></div>
+<Dropdown class="col-3" />
 <table class="table table-striped table-dark">
   <thead>
     <tr>
@@ -11,7 +13,7 @@
       <Product v-for="product in allProducts" :key=product._id v-bind:product="product" />
   </tbody>
 </table>
-<PopUp />
+<CreatePopUp />
 </div>
 </template>
 
@@ -20,6 +22,7 @@ import { mapGetters, mapActions } from 'vuex';
 import Product from './Product';
 import CreatePopUp from './CreatePopUp';
 import Sort from './Sort';
+import Dropdown from './Dropdown';
 
 export default {
   name: 'DataTable',
@@ -29,11 +32,12 @@ export default {
   components:{
     Product,
     CreatePopUp,
-    Sort
+    Sort,
+    Dropdown
   },
   computed: mapGetters(["allProducts", "getHeaders"]),
   created(){
-    this.getProducts();
+    this.getProducts(10);
   }
 }
 </script>

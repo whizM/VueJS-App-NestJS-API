@@ -11,7 +11,7 @@ export default {
     name: "Sort",
     props:["name"],
     methods:{
-        ...mapActions(["sort", "sortByNumber"]),
+        ...mapActions(["sort"]),
         sortProducts(name){
             this.sort(name);
         }

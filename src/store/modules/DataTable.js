@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const state = {
     products:[],
-    headers:["name", "code", "weight", "price", "color"]
+    headers:["name", "code", "weight", "price", "color"],
 };
 
 const getters = {
@@ -11,9 +11,9 @@ const getters = {
 };
 
 const actions = {
-    async getProducts({ commit }) {
-        const response = await axios.get("http://localhost:3000/produse");
-
+    async getProducts({ commit }, limit) {
+        const response = await axios.get(`http://localhost:3000/produse/${limit}`);
+        
         commit("fillDataTable", response.data);
     },
 
@@ -27,11 +27,7 @@ const actions = {
 
     async editProduct({commit}, product){
 
-        console.log("Action", product._id);
-        console.log(`http://localhost:3000/${product._id}`);
         const response = await axios.put(`http://localhost:3000/produse/${product._id}`, {product});
-
-        console.log(response.data);
 
         commit("editProduct", response.data);
     },
@@ -44,10 +40,6 @@ const actions = {
 
     sort({commit}, string){
         commit("sort", string);
-    },
-
-    sortByNumber({commit}, number){
-        commit("sortByNumber", number);
     }
 };
 
