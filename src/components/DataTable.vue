@@ -14,6 +14,7 @@
   </tbody>
 </table>
 <CreatePopUp />
+<NumberOfPages />
 </div>
 </template>
 
@@ -23,21 +24,24 @@ import Product from './Product';
 import CreatePopUp from './CreatePopUp';
 import Sort from './Sort';
 import Dropdown from './Dropdown';
+import NumberOfPages from './NumberOfPages';
 
 export default {
   name: 'DataTable',
   methods: {
-    ...mapActions(["getProducts"]),
+    ...mapActions(["getProducts", "setNumberOfPages"]),
   },
   components:{
     Product,
     CreatePopUp,
     Sort,
-    Dropdown
+    Dropdown,
+    NumberOfPages
   },
   computed: mapGetters(["allProducts", "getHeaders"]),
   created(){
-    this.getProducts(10);
+    this.getProducts({limit: 10});
+    this.setNumberOfPages(10);
   }
 }
 </script>

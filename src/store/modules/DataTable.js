@@ -3,18 +3,29 @@ import axios from 'axios';
 const state = {
     products:[],
     headers:["name", "code", "weight", "price", "color"],
+    numberOfPages: 0,
+    elemPerPage: 0,
 };
 
 const getters = {
     allProducts: state => state.products,
-    getHeaders: state => state.headers
+    getHeaders: state => state.headers,
+    getNumberOfPages: state => state.numberOfPages,
+    getElemPerPage: state => state.elemPerPage
 };
 
 const actions = {
-    async getProducts({ commit }, limit) {
-        const response = await axios.get(`http://localhost:3000/produse/${limit}`);
+    async getProducts({ commit }, data) {
+        const response = await axios.get(`http://localhost:3000/produse/${data.limit}/${data.skip}`);
+
+        const numLimit = parseInt(data.limit);
+
+        const mutationData = {
+            res: response.data,
+            numLimit
+        }
         
-        commit("fillDataTable", response.data);
+        commit("fillDataTable", mutationData);
     },
 
     async addProduct({commit}, product){
@@ -38,13 +49,22 @@ const actions = {
         commit("deleteProduct", response.data._id);
     },
 
+    async setNumberOfPages({commit}, elemPerPage){
+        const response = await axios.get(`http://localhost:3000/produse/count/${elemPerPage}`);
+
+        commit("setNumberOfPages", response.data);
+    },
+
     sort({commit}, string){
         commit("sort", string);
     }
 };
 
 const mutations = {
-    fillDataTable: (state, products) => (state.products = products),
+    fillDataTable: (state, data) => {
+        state.products = data.res;
+        state.elemPerPage = data.numLimit;
+    },
     addToDataTable: (state, product) => (state.products.unshift(product)),
     editProduct: (state, product) => {
 
@@ -78,6 +98,7 @@ const mutations = {
         }
         state.products.sort(compare);
     },
+    setNumberOfPages: (state, numberOfPages) => (state.numberOfPages = numberOfPages)
 };
 
 export default {

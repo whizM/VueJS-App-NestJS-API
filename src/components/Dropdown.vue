@@ -17,7 +17,7 @@ export default {
     methods:{
         ...mapActions(["getProducts"]),
         onChange(limit){
-            this.getProducts(limit);
+            this.getProducts({limit});
         }
     }
 }
