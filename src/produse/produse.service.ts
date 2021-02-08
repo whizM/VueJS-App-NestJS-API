@@ -1,6 +1,5 @@
 import { BadRequestException, Header, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { copyFileSync } from 'fs';
 import { Model } from 'mongoose';
 import { Product } from './produse.model'
 
@@ -43,10 +42,27 @@ export class ProduseService {
         return deletedProduct;
     }
 
-    async getProducts(){
-        const products = await this.produsModel.find({});
+    async getProducts(limit: string, skip: string){
+        let products;
+        let numLimit;
+
+        if( typeof limit === "string" && typeof skip === "string"){
+            numLimit = parseInt(limit);
+            const numSkip = parseInt(skip);
+
+            products = await this.produsModel.find({isDeleted: false}).skip(numSkip).limit(numLimit);
+        } else if (typeof limit === "string") {
+            numLimit = parseInt(limit);
+            products = await this.produsModel.find({isDeleted: false}).limit(numLimit);
+        } else {
+            products = await this.produsModel.find({isDeleted: false}).limit(10);
+        }
 
         return products;
+    }
+
+    async count(){
+        return await this.produsModel.countDocuments({isDeleted: false});
     }
 
     private async findProductById(id: String): Promise<Product>{

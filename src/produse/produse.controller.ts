@@ -1,4 +1,3 @@
-import { Header } from '@nestjs/common';
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { Product } from './produse.model';
 import { ProduseService } from './produse.service';
@@ -28,9 +27,18 @@ export class ProduseController {
         return deletedProduct;
     }
 
-    @Get()
-    async getProducts(){
-        const products = await this.productService.getProducts();
+    @Get("/count/:elemPerPage")
+    async getNumberOfPages(@Param('elemPerPage') elemPerPage){
+        const numberOfElements = await this.productService.count()
+
+        return  numberOfElements % elemPerPage === 0 ? 
+                numberOfElements / elemPerPage : 
+                Math.floor(numberOfElements / elemPerPage) + 1;
+    }
+
+    @Get(":limit/:skip")
+    async getProducts(@Param('limit') limit, @Param('skip') skip){
+        const products = await this.productService.getProducts(limit, skip);
 
         return products;
     }
