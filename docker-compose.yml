@@ -1,0 +1,11 @@
+version: "3"
+services:
+  api:
+    image: "dinu98/nestjs-api:1.0"
+    ports:
+      - "3000:3000"
+
+  client:
+    image: "dinu98/vuejs-app:1.0"
+    ports:
+      - "8000:8000"
